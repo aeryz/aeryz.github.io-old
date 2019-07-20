@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Overthewire - Utumno0 Çözümü"
+title: "Overthewire - Utumno1 Çözümü"
 subtitle: "Shellcode mevzuları"
 date: 2019-08-20 19:20:13 +0300
 background: '/img/posts/bg.png'
