@@ -58,7 +58,7 @@ LD_PRELOAD=./puts.so /utumno/utumno0
 
 Çıktı:
 ```sh
-"Çalıştı"
+Çalıştı
 ```
 
 Fonksiyonumuz çalışıyor. O zaman stack değerlerini okuyarak analizimize başlayalım.
