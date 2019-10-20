@@ -19,7 +19,7 @@ Programı çalıştırdığımızda bizden girdi bekliyor. Üst üste girdileri 
 
 main fonksiyonunu disassemble ettiğimizde ilk olarak şu dikkatimizi çekiyor:
 
-```assembly
+```
 ...
 0x08048401 <+22>:    mov    eax,DWORD PTR [ebp-0xc]
 ...
@@ -32,7 +32,7 @@ Gördüğümüz üzere önce 22. satırdan 112. satıra koşulsuz bir zıplama, 
 
 **ebp-0x8** adresindeki değişkenin başlangıç değerini ve her döngüde nasıl değiştiğini bulmak için döngünün içinde bu değişkeni arayalım.
 
-```assembly
+```
 0x080483f2 <+7>:     mov    DWORD PTR [ebp-0xc],0x0
 0x080483f9 <+14>:    mov    eax,DWORD PTR [ebp-0xc]
 0x080483fc <+17>:    mov    DWORD PTR [ebp-0x8],eax
@@ -47,7 +47,7 @@ Programın hiçbir yerinde **system** fonksiyonunun çağırılmadığı veya **
 
 Bundan ötürü **getchar** fonksiyonu ile aldığı karakterleri nereye yazıyor sorusundan analizimize devam edebiliriz.
 
-```assembly
+```
 0x08048440 <+85>:    call   0x80482c0 <getchar@plt>
 0x08048445 <+90>:    mov    BYTE PTR [ebp+ebx*1-0x24],al
 ```
@@ -56,7 +56,7 @@ Bundan ötürü **getchar** fonksiyonu ile aldığı karakterleri nereye yazıyo
 
 Döngünün içindeki matematiksel işlemleri inceleyerek devam edelim.
 
-```assembly
+```
 0x08048401 <+22>:    mov    eax,DWORD PTR [ebp-0xc]
 0x08048404 <+25>:    mov    ecx,eax
 0x08048406 <+27>:    lea    edx,[ebp-0x3c]
@@ -73,7 +73,7 @@ Sırasıyla olan şeyler şunlar:
 
 Yani kısaca ebp-0x3c değişkenine "D1" dersek program "D1 + sayaç" adresine aldığı karakteri koyuyor.
 
-```assembly
+```
 0x08048410 <+37>:    lea    edx,[ebp-0x3c]
 0x08048413 <+40>:    mov    eax,DWORD PTR [ebp-0x8]
 0x08048416 <+43>:    add    eax,edx
@@ -97,7 +97,7 @@ Burada da aslında yapılan işlem şu oldu:
 ecx = (girdiden alınan karakter) xor (3 * sayaç)
 ```
 
-```assembly
+```
 0x08048428 <+61>:    lea    edx,[ebp-0x3c]
 0x0804842b <+64>:    mov    eax,DWORD PTR [ebp-0x8]
 0x0804842e <+67>:    add    eax,edx
@@ -106,7 +106,7 @@ ecx = (girdiden alınan karakter) xor (3 * sayaç)
 
 Bu seferde program aynı işlemleri tekrarlayarak bu sefer'de "D1 + sayaç" adresine ecx, yani "(girdiden alınan karakter) xor (3 * sayaç)" değerini yazıyor.
 
-```assembly
+```
 0x08048432 <+71>:    lea    edx,[ebp-0x3c]
 0x08048435 <+74>:    mov    eax,DWORD PTR [ebp-0x8]
 0x08048438 <+77>:    add    eax,edx
@@ -170,7 +170,7 @@ Programı çalıştırıp esp'nin değerini(**0xffffd6ec**) alıyoruz.
 
 Şimdi ise matematiksel işlemi tersine çevirelim.
 
-```assembly
+```
 0x08048445 <+90>:    mov    BYTE PTR [ebp+ebx*1-0x24],al
 ```
 

