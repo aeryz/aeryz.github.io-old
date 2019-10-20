@@ -3,7 +3,7 @@ layout: post
 title: "Overthewire - Utumno0 Çözümü"
 subtitle: "C Kütüphaneleri mevzuları"
 date: 2019-07-20 14:08:13 +0300
-background: '/img/posts/06.jpg'
+background: '/img/posts/bg.png'
 ---
 # Overthewire Çözümleri - Utumno0
 

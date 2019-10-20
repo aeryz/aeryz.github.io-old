@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Overthewire - Utumno2 Çözümü"
-subtitle: "Karışık Mevzular"
+subtitle: "Karışık mevzular"
 date: 2019-08-21 22:30:13 +0300
 background: '/img/posts/bg.png'
 ---
