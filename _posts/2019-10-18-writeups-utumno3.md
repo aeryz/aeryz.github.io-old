@@ -2,7 +2,7 @@
 layout: post
 title: "Overthewire - Utumno3 Çözümü"
 subtitle: "Tersine matematik mevzuları"
-date: 2019-07-20 14:08:13 +0300
+date: 2019-09-20 11:00:13 +0300
 background: '/img/posts/bg.png'
 ---
 

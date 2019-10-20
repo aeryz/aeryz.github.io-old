@@ -81,7 +81,7 @@ Gördüğünüz gibi kendi **format string** açığımızı oluşturarak **stac
 f7fee710 ffffd5f4 f7fcf52c f7fc3dbc 0 ffffd5c8 8048402 80484a5 8048490 0 f7e27286 1 ffffd664 ffffd66c 0 0 0 f7fc2000
 ```
 
-Bu çıktıyı şu şekilde değerlendirebiliriz. Fonksiyon çağırmalarda return adreslerini stack'e atılır. Kodumuzun 804 ile başlayan adreslere koyulacağını zaten biliyoruz. Böylece inceleyeceğimiz aralığı **8048402-80484a5** olarak belirleyebiliriz. Bir deneyelim:
+Bu çıktıyı şu şekilde değerlendirebiliriz. Fonksiyon çağırırken return adresleri stack'e atılır. Kodumuzun 804 ile başlayan adreslere koyulacağını zaten biliyoruz. Böylece inceleyeceğimiz aralığı **8048402-80484a5** olarak belirleyebiliriz. Bir deneyelim:
 
 ```c
 #include <stdio.h>
